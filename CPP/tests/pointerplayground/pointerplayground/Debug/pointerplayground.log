@@ -1,0 +1,8 @@
+﻿  pointerplayground.cpp
+C:\Users\druzhelubnyy\source\repos\pointerplayground\pointerplayground\pointerplayground.cpp(35,24): warning C4305: аргумент: усечение из "__int64" в "const _Elem"
+          with
+          [
+              _Elem=char
+          ]
+C:\Users\druzhelubnyy\source\repos\pointerplayground\pointerplayground\pointerplayground.cpp(35,12): warning C4309: аргумент: усечение константного значения
+  pointerplayground.vcxproj -> C:\Users\druzhelubnyy\source\repos\pointerplayground\Debug\pointerplayground.exe
