@@ -12,9 +12,9 @@ struct CalculationException {
 };
 
 int calcNumbersAfterPoint(double n) {
+	//Подсчитывает кол-во знаков после запятой до 30
 	const int MAXCOUNTER = 30;
 	int counter = 0;
-	
 	for (; int(n)!=n && counter < MAXCOUNTER; n *= 10) {
 		counter++;
 	}
@@ -27,8 +27,7 @@ double truncate(double value, int n) {
 	return std::trunc(value * pow(10, n)) / pow(10, n);
 }
 
-
-double ePowerMinusXApprox(double& x, double& absError, unsigned int& numberMax) {
+double ePowerMinusXApprox(double& x, double& absError, int& numberMax) {
 	const char* PRECISION_NOT_REACHED_EXCEPTION = "Точность не достигнута";
 	double result = 1.0;
 	double elemI = 1;
@@ -81,9 +80,9 @@ int main() {
 			throw ABSERROR_GENERAL_EXCEPTION;
 		}
 		std::cout << "Максимальное число слагаемых: ";
-		unsigned int numberMax = 0;
+		int numberMax = 0;
 		std::cin >> numberMax;
-		if (!std::cin.good() || numberMax == 0) {
+		if (!std::cin.good() || numberMax <= 0) {
 			throw NUMBERMAX_GENERAL_EXCEPTION;
 		}
 		std::cout << "Интервал (два числа такие, что -1 < x1 <= x2 < 1): ";
@@ -139,4 +138,3 @@ int main() {
 	}
 	return 0;
 }
-
