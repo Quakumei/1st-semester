@@ -1,0 +1,4 @@
+6 abcdef abc
+3 abc def
+6 abcdef def
+5 אבגדה אבגדה
