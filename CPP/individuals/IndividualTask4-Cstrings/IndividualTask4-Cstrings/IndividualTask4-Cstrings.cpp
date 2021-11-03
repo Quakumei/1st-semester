@@ -5,35 +5,30 @@
 #define IFNAME "input.txt"
 #define OFNAME "output.txt"
 
-
-bool aInB(const char a, const char* b) {
-    for (int i = 0; b[i] != '\0'; i++) {
-        if (b[i] == a) {
-            return true;
-        }
-    }
-    return false;
-}
-
 char* getDiff(char* destination, const char* source_a, const char* source_b) {
-    // O(n^n) worst (case: search a, b, c in deffffff... ...fffabc)
-    // optimization: sort and leave only unique - but it uses more memory.
     int j = 0;
+    int map[255] = {};
     for (int i = 0; source_a[i] != '\0'; i++) {
-        if (!aInB(source_a[i], destination) && !aInB(source_a[i], source_b)) {
-            if (destination[j] == '\0') {
-                throw "Недостаточно места в конечной строке";
-            }
-            destination[j] = source_a[i];
-            j++;
+        int charIndex = static_cast<int>(source_a[i]);
+        if (map[charIndex] == 0) {
+            map[charIndex] = 1; //Встретился только в 1 строке но не в обеих 
         }
     }
-    for (int i = 0; source_a[i] != '\0'; i++) {
-        if (!aInB(source_b[i], destination) && !aInB(source_b[i], source_a)) {
+    for (int i = 0; source_b[i] != '\0'; i++) {
+        int charIndex = static_cast<int>(source_b[i]);
+        if (map[charIndex] == 1) {
+            map[charIndex] = 3; //Общие
+        }
+        else if (map[charIndex] == 0) {
+            map[charIndex] = 2; //Встретилось только в 2 строке но не в обеих 
+        }
+    }
+    for (int i = 0; i < 256; i++){
+        if (map[i] < 3 && map[i] > 0) {
             if (destination[j] == '\0') {
-                throw "Недостаточно места в конечной строке";
+                throw "Недостаточно памяти в destination строке. Завершение программы...";
             }
-            destination[j] = source_b[i];
+            destination[j] = static_cast<char>(i);
             j++;
         }
     }
@@ -43,82 +38,65 @@ char* getDiff(char* destination, const char* source_a, const char* source_b) {
 
 int main()
 {
-
     setlocale(LC_ALL, "RUSSIAN");
-
     std::cout << "\nИз файла...\n";
-    std::ifstream fin(IFNAME);
-    std::ofstream fout(OFNAME);
-    if (!fin.good() || !fout.good()) {
-        std::cerr << "Ошибка открытия файла. Завершение программы...\n";
-        return 1;
-    }
-    while (!fin.eof()) {
-        int arraySizeA = -1;
-        fin >> arraySizeA;
-        if (arraySizeA <= 0 || !fin.good()) {
-            std::cerr << "Размер массива1 задан неверно. Завершение программы...\n";
-            return 1;
+    try {
+        std::ifstream fin(IFNAME);
+        std::ofstream fout(OFNAME);
+        if (!fin.good() || !fout.good()) {
+            throw "Ошибка открытия файла. Завершение программы...\n";
         }
-        int arraySizeB = -1;
-        fin >> arraySizeB;
-        if (arraySizeB <= 0 || !fin.good()) {
-            std::cerr << "Размер массива2 задан неверно. Завершение программы...\n";
-            return 1;
-        }
+        while (!fin.eof()) {
+            int arraySize = -1;
+            fin >> arraySize;
+            if (arraySize <= 0 || !fin.good()) {
+                throw "Размер массива1 задан неверно. Завершение программы...\n";
+            }
+            fin.ignore();
 
-        char* charArrayA = new char[arraySizeA + 1];
-        char* charArrayB = new char[arraySizeB + 1];
-        if (fin.eof()) {
-            std::cerr << "Неожиданный конец файла при чтении массива1. Завершение программы...\n";
-            return 1;
-        }
-        try {
-            fin.getline(charArrayA, 2, ' ');
-        }
-        catch (const char * _){
-            std::cerr << "Ошибка ввода. Завершение программы.";
-            return 1;
-        }
-        
-        if (fin.eof()) {
-            std::cerr << "Неожиданный конец файла при чтении массива2. Завершение программы...\n";
-            return 1;
-        }
-        try {
-            fin >> charArrayB;
-        }
-        catch (const char* _) {
-            std::cerr << "Ошибка ввода. Завершение программы.";
-            return 1;
-        }
-             
-        int arraySizeSum = arraySizeA + arraySizeB + 1;
-        const int ASCII_SIZE = 256;
-        int smallestSize = (arraySizeSum < ASCII_SIZE) ? arraySizeSum : ASCII_SIZE;
-        char* destinationCharArray = new char[smallestSize + 1];
-        destinationCharArray[smallestSize] = '\0';
+            char* charArrayA = new char[arraySize + 1];
+            charArrayA[arraySize] = '\0';
+            char* charArrayB = new char[arraySize + 1];
+            charArrayB[arraySize] = '\0';
 
-        try {
+            if (fin.eof()) {
+                throw "Неожиданный конец файла при чтении массива1. Завершение программы...\n";
+            }
+            fin.getline(charArrayA, arraySize + 1,'\n');
+                        
+            if (fin.eof()) {
+                throw "Неожиданный конец файла при чтении массива2. Завершение программы...\n";
+            }
+            fin.getline(charArrayB, arraySize + 1, '\n');
+            
+
+            int arraySizeSum = arraySize * 2;
+            const int ASCII_SIZE = 255;
+            int smallestSize = (arraySizeSum < ASCII_SIZE) ? arraySizeSum : ASCII_SIZE;
+            char* destinationCharArray = new char[smallestSize + 1];
+            for (int i = 0; i < smallestSize; i++) {
+                destinationCharArray[i] = ':';
+            }
+            destinationCharArray[smallestSize] = '\0';
+
             getDiff(destinationCharArray, charArrayA, charArrayB);
+            fout << destinationCharArray << '\n';
+
+            // LOG
+            std::clog << "=============================\n";
+            std::clog << charArrayA << "\\0\n";
+            std::clog << charArrayB << "\\0\n";
+            std::clog << destinationCharArray << "\\0\n";
+
+
+            delete[] charArrayA;
+            delete[] charArrayB;
+            delete[] destinationCharArray;
         }
-        catch (const char * error){
-            std::cerr << error;
-            return 1;
-        }
-        
-        fout << destinationCharArray << '\n';
-
-        // LOG
-        std::clog << "=============================\n";
-        std::clog << charArrayA << '\n';
-        std::clog << charArrayB << '\n';
-        std::clog << destinationCharArray << '\n';
-
-
-        delete[] charArrayA;
-        delete[] charArrayB;
-        delete[] destinationCharArray;
+    }
+    catch (const char* error) {
+        std::cerr << error;
+        return 1;
     }
 
     return 0;
