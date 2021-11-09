@@ -4,8 +4,7 @@
 
 #define FILE_INPUT_REGULAR "regular_arrays_in.txt"
 #define FILE_OUTPUT_REGULAR "regular_arrays_out.txt"
-#define FILE_INPUT_DYNAMIC "dynamic_arrays_in.txt"
-#define FILE_OUTPUT_DYNAMIC "dynamic_arrays_out.txt"
+
 
 int getCountZeroInColumnAny(const int* array, int nRow, int nColumn) {
 	int counter = 0;
@@ -39,11 +38,6 @@ void print2dArray(const int* array, const int nRow, const int nColumn, std::ostr
 
 int main() {
 	setlocale(LC_ALL, "Russian");
-	//int a[3][3] = { {1,0,1} ,
-	//				{1,0,1} , 
-	//				{1,1,1} };
-	//std::cout << "\n\n" << getCountZeroinColumnAny(a[0],3,3) << '\n';
-
 	std::cout << "Встроенные массивы из файла: \n\n";
 	const int BIG_SIZE = 100;
 	int matrix[BIG_SIZE][BIG_SIZE] = {};
@@ -62,7 +56,7 @@ int main() {
 			int nRow = 0;
 			ifs >> nRow;
 			if (ifs.eof() || !ifs.good()) {
-				throw "Ошибка ввода массива. Завершение программы...";
+				throw "Ошибка ввода размера массива. Завершение программы...";
 			}
 			else if (nRow <= 0) {
 				throw "Размер массива задан некорректно. Завершение программы...";
@@ -70,18 +64,11 @@ int main() {
 			int nColumn = 0;
 			ifs >> nColumn;
 			if (ifs.eof() || !ifs.good()) {
-				throw "Ошибка ввода массива. Завершение программы...";
+				throw "Ошибка ввода размера массива. Завершение программы...";
 			}
 			else if (nColumn <= 0) {
 				throw "Размер массива задан некорректно. Завершение программы...";
 			}
-
-			//For dynamic
-			/*int** matrix = new int* [nRow];
-			for (int i = 0; i < nRow; ++i)
-			{
-				matrix[i] = new int[nColumn];
-			}*/
 
 			read2dArray(matrix[0], nRow, nColumn, ifs);
 			print2dArray(matrix[0], nRow, nColumn, std::cout);
@@ -95,7 +82,4 @@ int main() {
 		return 1;
 	}
 	return 0;
-
-
-
 }
