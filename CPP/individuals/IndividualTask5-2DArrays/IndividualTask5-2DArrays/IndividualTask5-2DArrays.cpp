@@ -22,6 +22,9 @@ int getCountZeroInColumnAny(const int* array, int nRow, int nColumn) {
 void read2dArray(int* destination, const int nRow, const int nColumn, std::ifstream& ifs) {
 	for (int i = 0; i < nRow; i++) {
 		for (int j = 0; j < nColumn; j++) {
+			if (!ifs.good()) {
+				throw "Ошибка ввода элемента массива. Завершение программы...";
+			}
 			ifs >> *(destination + nRow * i + j);
 		}
 	}
