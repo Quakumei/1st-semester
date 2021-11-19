@@ -1,41 +1,21 @@
 ﻿#include <iostream>
 
+/*
+Тесты
 
-// <знак> ::= +|- 
-bool isSign(char* str) {
-	if (*str == '+' || *str == '-') {
-		str++;
-		return true;
-	}
-	return false;
-}
+гуд
+01
+5 6 
+A + 5
+A * B - 10 * C
 
-bool isSign(const char*& c) {
-	if (*c == '+' || *c == '-') {
-		c++;
-		return true;
-	}
-	return false;
-}
+бед
+- A * B - 10 * C
+A ** B + 10 * C
+A * A + 10 * C +
+K + 5
+A + 5 _ 4
+B + 5_
 
-//<вещественное> ::= <мантисса> <порядок> | <знак> <мантисса> <порядок>
-bool isRealNumber(const char*& str) {
-	isSign(str);
-	return isMantissa(str) && isExhibitor(str) && *str == '\0';
-}
+*/
 
-// <вещественное> ::= <мантисса><порядок>
-
-bool isRealNumber(const char** expression)
-{
-	if (isMantissa(expression)) {
-		if (isExhibitor(expression)) {
-			return (**expression == '\0'); // вернуть true, если число состоит
-			// только из мантиссы и экспоненты 
-			//(после экспоненты больше ничего нет)
-		}
-	}
-	else {
-		return false;
-	}
-}
