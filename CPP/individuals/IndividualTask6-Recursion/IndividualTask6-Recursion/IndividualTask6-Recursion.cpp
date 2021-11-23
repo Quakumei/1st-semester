@@ -71,16 +71,26 @@ bool isExpressionM(const char*& arr, bool braced=false) {
 }
 
 int main() {
+	
 	setlocale(LC_ALL, "Russian");
 	const int MAX_STR_LENGTH = 100;
 	char* strf = new char[MAX_STR_LENGTH];
 	std::ifstream ifs("input.txt");
+	try {
+		if (!ifs.good()) {
+			throw "Файл ввода недоступен. Завершение программы...";
+		}
+	}
+	catch (const char * e){
+		std::cerr << e;
+		return 1;
+	}
+	
 	std::cout << "Reading input from file...\n";
 	while (ifs) {
 		ifs.getline(strf, MAX_STR_LENGTH);
 		const char* str = strf;
 		const char* strBuf = str;
-		const char* ans = (isExpressionM(str) ? "yes" : "no");
-		std::cout << ans << '\t' << strBuf << "\n";
+		std::cout << (isExpressionM(str) ? "TRUE" : "FALSE") << '\t' << strBuf << "\n";
 	}
 }
