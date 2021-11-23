@@ -1,152 +1,86 @@
-﻿// var 5
-#include <iostream>
-#include <assert.h> /* assert */
-#include <functional>
+﻿#include <iostream>
+#include <fstream>
 
-bool isLetter(char * str){
-	switch (*str) {
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-		return true;
-	default:
-		return false;
-	}
-}
-bool isLetter(const char* &str) {
-	switch (*str) {
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-		return true;
-	default:
-		return false;
-	}
-}
-bool isIdentificator(char* str) {
-	return isLetter(str);
-}
-bool isIdentificator(const char*& str) {
-	return isLetter(str);
-}
-bool isDigit(char* str) {
-	switch (*str) {
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case '0':
-		return true;
-	default:
-		return false;
-	}
-}
-bool isDigit(const char* &str) {
-	switch (*str) {
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case '0':
-		return true;
-	default:
-		return false;
-	}
+bool isDigitC(const char*& arr) {
+	return *arr >= '0' && *arr <= '9';
 }
 
-bool tests() {
-	return true;
+bool isLetterC(const char*& arr) {
+	return *arr >= 'A' && *arr <= 'E';
+}
+
+bool isIdentifierC(const char*& arr) {
+	return isLetterC(arr);
+}
+
+bool isUIntM(const char*& arr, bool flag=false)
+{
+	if (isDigitC(arr))
+	{
+		arr++;
+		flag = true;
+		return isUIntM(arr, flag);
+	}
+	return flag;
+}
+
+bool isExpressionM(const char*&, bool);
+
+bool isMultiplierM(const char*& arr) {
+	if (*arr == '(') {
+		arr++;
+		if (isExpressionM(arr, true)) {
+			return *(arr++) == ')';
+		}
+	}
+	if (isIdentifierC(arr)) {
+		arr++;
+		return true;
+	}
+	if (isUIntM(arr)) {
+		return true;
+	}
+	return false;
+}
+
+bool isTermM(const char*& arr) {
+	if (isMultiplierM(arr)) {
+		if (*arr == '*') {
+			arr++;
+			return isTermM(arr);
+		}
+		else {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool isExpressionM(const char*& arr, bool braced=false) {
+	if (isTermM(arr)) {
+		if (*arr == '+' || *arr == '-') {
+			arr++;
+			return isExpressionM(arr, braced);
+		}
+		if (*arr == ')' && braced) {
+			return true;
+		}
+		return *arr=='\0';
+	}
+	return false;
 }
 
 int main() {
-	std::cout << "Running tests... ";
-	if (!tests()) {
-		std::cerr << "bad";
-		return 1;
+	setlocale(LC_ALL, "Russian");
+	const int MAX_STR_LENGTH = 100;
+	char* strf = new char[MAX_STR_LENGTH];
+	std::ifstream ifs("input.txt");
+	std::cout << "Reading input from file...\n";
+	while (ifs) {
+		ifs.getline(strf, MAX_STR_LENGTH);
+		const char* str = strf;
+		const char* strBuf = str;
+		const char* ans = (isExpressionM(str) ? "yes" : "no");
+		std::cout << ans << '\t' << strBuf << "\n";
 	}
-	else {
-		std::cout << "OK.\n";
-	}
-
-	std::cout << "\n1################################\n";
-	int size = 3;
-	const char** ta = new const char* [size];
-	for (int i = 0; i < size; ++i)
-	{
-		ta[i] = new char[size];
-	}
-	ta[0] = "123";
-	ta[1] = "A10";
-	ta[2] = "7A9";
-	for (int i = 0; i < size; i++) {
-		const char * cur = ta[i];
-		std::cout << "test: " << cur << "\nresult: ";
-		std::cout << isDigit(cur) << "\n\n";
-	}
-
-	std::cout << "\n2################################\n";
-	size = 3;
-	const char** ta1 = new const char* [size];
-	for (int i = 0; i < size; ++i)
-	{
-		ta1[i] = new char[size];
-	}
-	ta1[0] = "123";
-	ta1[1] = "A10";
-	ta1[2] = "7A9";
-	for (int i = 0; i < size; i++) {
-		const char* cur = ta1[i];
-		std::cout << "test: " << cur << "\nresult: ";
-		std::cout << isLetter(cur) << "\n\n";
-	}
-
-	std::cout << "\n3################################\n";
-	size = 3;
-	const char** ta2 = new const char* [size];
-	for (int i = 0; i < size; ++i)
-	{
-		ta2[i] = new char[size];
-	}
-	ta2[0] = "123";
-	ta2[1] = "A10";
-	ta2[2] = "7A9";
-	for (int i = 0; i < size; i++) {
-		const char* cur = ta2[i];
-		std::cout << "test: " << cur << "\nresult: ";
-		std::cout << isIdentificator(cur) << "\n\n";
-	}
-
-	std::cout << "\n4################################\n";
-	size = 5;
-	const char** ta3 = new const char* [3];
-	for (int i = 0; i < 3; ++i)
-	{
-		ta3[i] = new char[size];
-	}
-	ta3[0] = "1234\0";
-	ta3[1] = "123F\0";
-	ta3[2] = "9999\0";
-	for (int i = 0; i < 3; i++) {
-		const char* cur = ta3[i];
-		std::cout << "test: " << cur << "\nresult: ";
-		std::cout << isIdentificator(cur) << "\n\n";
-	}
-
-	
-
-	return 0;
 }
