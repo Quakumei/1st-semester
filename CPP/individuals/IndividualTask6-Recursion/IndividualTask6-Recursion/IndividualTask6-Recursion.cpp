@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+<<<<<<< Updated upstream
 #include <fstream>
 
 bool isDigitC(const char*& arr) {
@@ -93,4 +94,8 @@ int main() {
 		const char* strBuf = str;
 		std::cout << (isExpressionM(str) ? "TRUE" : "FALSE") << '\t' << strBuf << "\n";
 	}
+=======
+int main(){
+	return 1;
+>>>>>>> Stashed changes
 }
