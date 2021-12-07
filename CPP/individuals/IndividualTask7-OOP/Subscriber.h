@@ -22,8 +22,8 @@ public:
 
 
 
-	std::istream& operator>>(Subscriber& s);
-	std::ostream& operator<<(Subscriber& s);
+	friend std::istream& operator>>(std::istream& is, Subscriber& sub);
+	friend std::ostream& operator<<(std::ostream& os, Subscriber& sub);
 
 private:
 	string name_;

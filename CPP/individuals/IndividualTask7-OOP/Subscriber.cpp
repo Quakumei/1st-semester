@@ -39,14 +39,13 @@ Subscriber::Subscriber(string name, string surname, string phone, string tariff)
 	this->tariff_ = tariff;
 }
 
-std::istream& Subscriber::operator>>(Subscriber& s){
-	// string name, surname, phone, tariff;
-	// *this >> name >> surname >> phone >> tariff;
-	// //TODO: Write object via setters
-	// return *this;
+std::istream& Subscriber::operator>>(std::istream& is, Subscriber& sub){
+	//TODO: Input check vars 
+	is >> sub.name_ >> sub.surname_ >> sub.phone_ >> sub.tariff_;
+	return is;
 }
 
-std::ostream& Subscriber::operator<<(Subscriber& s){
-
+std::ostream& operator<<(std::ostream& os, const Subscriber& sub){
+	os << "[ " << sub.name_ << " , " << sub.surname_ << " , "<< sub.phone_ << " , "<< sub.tariff_ << " ]\n"; 
+	return os;
 }
-
