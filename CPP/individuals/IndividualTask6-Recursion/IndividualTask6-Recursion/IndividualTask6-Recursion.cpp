@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-<<<<<<< Updated upstream
 #include <fstream>
 
 bool isDigitC(const char*& arr) {
@@ -14,7 +13,7 @@ bool isIdentifierC(const char*& arr) {
 	return isLetterC(arr);
 }
 
-bool isUIntM(const char*& arr, bool flag=false)
+bool isUIntM(const char*& arr, bool flag = false)
 {
 	if (isDigitC(arr))
 	{
@@ -57,7 +56,7 @@ bool isTermM(const char*& arr) {
 	return false;
 }
 
-bool isExpressionM(const char*& arr, bool braced=false) {
+bool isExpressionM(const char*& arr, bool braced = false) {
 	if (isTermM(arr)) {
 		if (*arr == '+' || *arr == '-') {
 			arr++;
@@ -66,13 +65,13 @@ bool isExpressionM(const char*& arr, bool braced=false) {
 		if (*arr == ')' && braced) {
 			return true;
 		}
-		return *arr=='\0';
+		return *arr == '\0';
 	}
 	return false;
 }
 
 int main() {
-	
+
 	setlocale(LC_ALL, "Russian");
 	const int MAX_STR_LENGTH = 100;
 	char* strf = new char[MAX_STR_LENGTH];
@@ -82,11 +81,11 @@ int main() {
 			throw "Файл ввода недоступен. Завершение программы...";
 		}
 	}
-	catch (const char * e){
+	catch (const char* e) {
 		std::cerr << e;
 		return 1;
 	}
-	
+
 	std::cout << "Reading input from file...\n";
 	while (ifs) {
 		ifs.getline(strf, MAX_STR_LENGTH);
@@ -94,8 +93,4 @@ int main() {
 		const char* strBuf = str;
 		std::cout << (isExpressionM(str) ? "TRUE" : "FALSE") << '\t' << strBuf << "\n";
 	}
-=======
-int main(){
-	return 1;
->>>>>>> Stashed changes
 }

@@ -9,7 +9,8 @@ class Subscriber {
 public:
 
 	Subscriber(string&, string&, string&, string&);
-	
+	Subscriber();
+
 	const string& getName() const;
 	const string& getSurname() const;
 	const string& getPhone() const;
@@ -20,10 +21,10 @@ public:
 	void setPhone(const string& value);
 	void setTariff(const string& value);
 
-
-
 	friend std::istream& operator>>(std::istream& is, Subscriber& sub);
-	friend std::ostream& operator<<(std::ostream& os, Subscriber& sub);
+	friend std::ostream& operator<<(std::ostream& os, const Subscriber& sub);
+
+
 
 private:
 	string name_;
