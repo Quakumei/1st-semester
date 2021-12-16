@@ -120,6 +120,10 @@ Subscriber::Subscriber(){
 	surname_ = "";
 	phone_ = "";
 	tariff_ = "";
+	name_ = "X.";
+	surname_ = "X-XXXXXXXXXXXXXXXXXX";
+	phone_ = "+X(XXX)XXX-XX-XX";
+	tariff_ = "XXX";
 }
 
 std::istream& operator>>(std::istream& is, Subscriber& sub){
@@ -132,4 +136,12 @@ std::istream& operator>>(std::istream& is, Subscriber& sub){
 std::ostream& operator<<(std::ostream& os, const Subscriber& sub){
 	os << "[ " << sub.getName() << ", " << sub.getSurname() << ", "<< sub.getPhone() << ", "<< sub.getTariff() << " ]\n" ; 
 	return os;
+}
+
+Subscriber::Subscriber(const Subscriber& src){
+	name_ = src.name_;
+	surname_ = src.surname_;
+	phone_ = src.phone_;
+	tariff_ = src.tariff_;
+	std::cout << "ANAL";
 }

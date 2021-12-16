@@ -6,29 +6,10 @@
 #include <utility>
 
 #include "Subscriber.h"
+#include "SubscriberList.h"
 
 typedef std::string string;
 
-void selectSort(Subscriber a[], int n, std::function<bool(const Subscriber&, const Subscriber&)> compare)
-{
-    for (int i = 0; i < n-1; i++){
-    	int min = i;
-    	for (int j = i+1; j < n; j++ ){
-    		if (compare(a[j], a[min])){
-    			min = j;
-    		}
-    	}
-
-    	if (min != i){
-    		std::swap(a[i], a[min]);
-
-    	// for (int i = 0; i < n; i ++){
-    	// 	ofs << a[i];
-    	// }
-    	//	ofs << '\n';
-    	}
-    }
-}
 
 int main(){
 	setlocale(LC_ALL, "ru-RU");
@@ -70,18 +51,18 @@ int main(){
     		throw std::invalid_argument( "array size must be greater than 0" );
     	}
 
-    	Subscriber subArray[n];
+    	SubscriberList subList;
     	for (int i = 0; i < n; i++){
     		Subscriber tempSub;
     		ifs >> tempSub;
-//    		ofs << tempSub;
-    		subArray[i] = tempSub; 
+    		std::cout << "Entering: " << tempSub << '\n';
+			subList.add(tempSub);
+			subList.printAll(std::cout); 
     	}
 
     	std::cout << "---- Введённый массив ----\n";
-    	for (int i = 0; i < n; i ++){
-    		std::cout << subArray[i];
-    	}
+    	subList.printAll(std::cout);
+
 
     	// Sort
     	std::function<bool(const Subscriber&, const Subscriber&)> compareNames = [](const Subscriber& a, const Subscriber& b)->bool{return a.getName() < b.getName();};
@@ -94,16 +75,16 @@ int main(){
     	std::cin >> choice;
     	switch(choice){
     		case 1:
-    		selectSort(subArray, n, compareSurnames);
+    		subList.sort(compareSurnames);
     		break;
     		case 2:
-    		selectSort(subArray, n, compareNames);
+    		subList.sort(compareNames);
     		break;
     		case 3:
-    		selectSort(subArray, n, compareTariffs);
+    		subList.sort(compareTariffs);
     		break;
     		case 4:
-    		selectSort(subArray, n, comparePhones);
+    		subList.sort(comparePhones);
     		break;
     		default:
     		throw std::invalid_argument( "you should choose a number between 1 and 4" );
@@ -111,17 +92,15 @@ int main(){
 
     	ofs << "Отсортированный массив:\n";
     	ofs << n << '\n';
-    	for (int i = 0; i < n; i ++){
-    		ofs << subArray[i];
-    		std::cout << subArray[i];
-    	}
+    	subList.printAll(ofs);
+    	subList.printAll(std::cout);
 
     	// Count uniques
     	int uniqueCounter = 1;
     	int severalPhonesCount = 0;
     	int phones = 0;
     	for(int i = 1; i < n; i++){
-    		if (subArray[i].getName() != subArray[i-1].getName() || subArray[i].getSurname() != subArray[i-1].getSurname()){
+    		if (subList[i].getName() != subList[i-1].getName() || subList[i].getSurname() != subList[i-1].getSurname()){
     			phones = 0;
     			uniqueCounter++;
     		}
@@ -131,8 +110,6 @@ int main(){
     		}
     	}
 
-
-    	//TODO: TODO TODO FIX THOSE TWO!!!!!!
     	ofs << "\nUnique count: " << uniqueCounter << '\n';
     	ofs << "Many numbers owners: " << severalPhonesCount << '\n';
 

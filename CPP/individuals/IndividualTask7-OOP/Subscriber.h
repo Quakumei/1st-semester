@@ -10,6 +10,7 @@ public:
 
 	Subscriber(string&, string&, string&, string&);
 	Subscriber();
+	Subscriber(const Subscriber& src);
 
 	const string& getName() const;
 	const string& getSurname() const;
