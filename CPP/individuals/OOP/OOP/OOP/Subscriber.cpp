@@ -114,10 +114,6 @@ Subscriber::Subscriber(string& name, string& surname, string& phone, string& tar
 }
 
 Subscriber::Subscriber() {
-	name_ = "";
-	surname_ = "";
-	phone_ = "";
-	tariff_ = "";
 	name_ = "X.";
 	surname_ = "X-XXXXXXXXXXXXXXXXXX";
 	phone_ = "+X(XXX)XXX-XX-XX";
@@ -125,8 +121,8 @@ Subscriber::Subscriber() {
 }
 
 std::istream& operator>>(std::istream& is, Subscriber& sub) {
-	std::string name = "Gleb", surname = "Zho-okov", phone = "+7(960)961-11-11", tariff = "303";
-	is >> name >> surname >> phone >> tariff;
+	string name = "Gleb", surname = "Zho-okov", phone = "+7(960)961-11-11", tariff = "303";
+	is >> surname >> name >> phone >> tariff;
 	sub = Subscriber(name, surname, phone, tariff);
 	return is;
 }
@@ -141,5 +137,4 @@ Subscriber::Subscriber(const Subscriber& src) {
 	surname_ = src.surname_;
 	phone_ = src.phone_;
 	tariff_ = src.tariff_;
-	std::cout << "ANAL";
 }

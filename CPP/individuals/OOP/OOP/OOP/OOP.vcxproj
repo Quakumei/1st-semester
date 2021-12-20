@@ -139,18 +139,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="comparators.cpp" />
+    <ClCompile Include="myString.cpp" />
     <ClCompile Include="OOP.cpp" />
-    <ClCompile Include="String.cpp" />
     <ClCompile Include="Subscriber.cpp" />
     <ClCompile Include="SubscriberList.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="String.h" />
+    <ClInclude Include="myString.h" />
     <ClInclude Include="Subscriber.h" />
     <ClInclude Include="SubscriberList.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="1.txt" />
+    <Text Include="2.txt" />
+    <Text Include="3.txt" />
+    <Text Include="4.txt" />
+    <Text Include="5.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

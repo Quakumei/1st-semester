@@ -1,7 +1,11 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include "myString.h"
+
 typedef std::string string;
+//typedef myString string;
+
 
 class Subscriber {
 public:

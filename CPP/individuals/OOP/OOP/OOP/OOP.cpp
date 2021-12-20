@@ -6,16 +6,17 @@
 #include <utility>
 
 #include "Subscriber.h"
+#include "myString.h"
 #include "SubscriberList.h"
+#include "comparators.cpp"
 
 typedef std::string string;
-
+//typedef myString string;
 
 int main() {
     setlocale(LC_ALL, "ru-RU");
 
     try {
-
         std::ofstream ofs("output.txt");
         try {
             ofs.exceptions(ofs.failbit);
@@ -26,16 +27,15 @@ int main() {
                 << "Explanatory string: " << e.what() << '\n'
                 << "Error code: " << e.code() << '\n';
         }
-        //Test
+        //Test of Subscriber
         string name = "G.", surname = "Zho-okov", phone = "+7(960)961-11-11", tariff = "303";
         Subscriber sub = Subscriber(name, surname, phone, tariff);
         std::cout << "TestSub\t: " << sub << '\n';
 
 
-        std::cout << "Введите имя тест-файла\n>>";
+        std::cout << "Введите имя тест-файла\n>> ";
         string filename = "1.txt";
         std::cin >> filename;
-
         std::ifstream ifs(filename);
         try {
             ifs.exceptions(ifs.failbit);
@@ -57,66 +57,52 @@ int main() {
         for (int i = 0; i < n; i++) {
             Subscriber tempSub;
             ifs >> tempSub;
-            std::cout << "Entering: " << tempSub << '\n';
+           // std::cout << "Entering: " << tempSub;
             subList.add(tempSub);
-            subList.printAll(std::cout);
         }
 
         std::cout << "---- Введённый массив ----\n";
         subList.printAll(std::cout);
 
-
-        // Sort
-        std::function<bool(const Subscriber&, const Subscriber&)> compareNames = [](const Subscriber& a, const Subscriber& b)->bool {return a.getName() < b.getName(); };
-        std::function<bool(const Subscriber&, const Subscriber&)> compareSurnames = [](const Subscriber& a, const Subscriber& b)->bool {return a.getSurname() < b.getSurname(); };
-        std::function<bool(const Subscriber&, const Subscriber&)> compareTariffs = [](const Subscriber& a, const Subscriber& b)->bool {return a.getTariff() < b.getTariff(); };
-        std::function<bool(const Subscriber&, const Subscriber&)> comparePhones = [](const Subscriber& a, const Subscriber& b)->bool {return a.getPhone() < b.getPhone(); };
-
-        std::cout << '\n' << "Выберите столбец сортировки:\n1-Фамилия\n2-Имя\n3-Тариф\n4-НомерТелефона\n>>";
-        int choice = 0;
-        std::cin >> choice;
-        switch (choice) {
-        case 1:
-            subList.sort(compareSurnames);
-            break;
-        case 2:
-            subList.sort(compareNames);
-            break;
-        case 3:
-            subList.sort(compareTariffs);
-            break;
-        case 4:
-            subList.sort(comparePhones);
-            break;
-        default:
-            throw std::invalid_argument("you should choose a number between 1 and 4");
-        }
-
-        ofs << "Отсортированный массив:\n";
-        ofs << n << '\n';
-        subList.printAll(ofs);
-        subList.printAll(std::cout);
-
-        // Count uniques
-        int uniqueCounter = 1;
-        int severalPhonesCount = 0;
-        int phones = 0;
-        for (int i = 1; i < n; i++) {
-            if (subList[i].getName() != subList[i - 1].getName() || subList[i].getSurname() != subList[i - 1].getSurname()) {
-                phones = 0;
-                uniqueCounter++;
+        bool exitFlag = false;
+        while (!exitFlag) {
+            std::cout << '\n' << "Выберите столбец сортировки:\n1 - Фамилия\n2 - Имя\n3 - Тариф\n4 - НомерТелефона\n5 - Выход\n>> ";
+            int choice = 0;
+            std::cin >> choice;
+            switch (choice) {
+            case 1:
+                subList.sort(comparators[COMPARATOR_SURNAME]);
+                break;
+            case 2:
+                subList.sort(comparators[COMPARATOR_NAME]);
+                break;
+            case 3:
+                subList.sort(comparators[COMPARATOR_TARIFF]);
+                break;
+            case 4:
+                subList.sort(comparators[COMPARATOR_PHONE]);
+                break;
+            case 5:
+                exitFlag = true;
+                break;
+            default:
+                throw std::invalid_argument("you should choose a number between 1 and 4");
             }
-            phones++;
-            if (phones == 2) {
-                severalPhonesCount += 1;
-            }
+
+            ofs << "Отсортированный массив:\n";
+            ofs << n << '\n';
+            subList.printAll(ofs);
+            subList.printAll(std::cout);
+
+            // Counters
+            int uniqueCounter = subList.countUniques();
+            int severalPhonesCount = subList.countSeverals();
+          
+            std::cout << "\nUnique count: " << uniqueCounter << '\n';
+            std::cout << "Many numbers owners: " << severalPhonesCount << '\n';
+            ofs << "\nUnique count: " << uniqueCounter << '\n';
+            ofs << "Many numbers owners: " << severalPhonesCount << '\n';
         }
-
-        ofs << "\nUnique count: " << uniqueCounter << '\n';
-        ofs << "Many numbers owners: " << severalPhonesCount << '\n';
-
-
-
     }
     catch (const std::invalid_argument& e) {
         std::cerr << "invalid_argument: " << e.what() << '\n';
