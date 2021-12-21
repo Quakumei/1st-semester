@@ -10,8 +10,8 @@
 #include "SubscriberList.h"
 #include "comparators.cpp"
 
-//typedef std::string string;
-typedef myString string;
+typedef std::string string;
+//typedef myString string;
 
 int main() {
     setlocale(LC_ALL, "ru-RU");
@@ -19,12 +19,12 @@ int main() {
     try {
         std::ofstream ofs("output.txt");
         if (ofs.fail()){
-            std::cerr << "Ошибка открытия файла вывода... Программа будет выполнена только в консоли. \n";
+            std::cerr << "Ошибка открытия файла вывода... Запись в файл производиться не будет.\n";
         }
         //Test of Subscriber
-        string name = "G.", surname = "Zho-okov", phone = "+7(960)961-11-11", tariff = "303";
-        Subscriber sub = Subscriber(name, surname, phone, tariff);
-        std::cout << "TestSub\t: " << sub << '\n';
+        //string name = "G.", surname = "Zho-okov", phone = "+7(960)961-11-11", tariff = "303";
+        //Subscriber sub = Subscriber(name, surname, phone, tariff);
+        //std::cout << "TestSub\t: " << sub << '\n';
 
 
         std::cout << "Введите имя тест-файла\n>> ";
@@ -33,21 +33,24 @@ int main() {
         std::ifstream ifs(filename);
         if (ifs.fail())
         {
-            std::cerr << "Ошибка открытия файла ввода \n";
+            std::cerr << "Ошибка открытия файла ввода\n";
             return 1;
         }
 
         int n = 0;
         ifs >> n;
         if (n <= 0) {
-            throw std::invalid_argument("array size must be greater than 0");
+            throw std::invalid_argument("Размер массив должен быть больше нуля.");
         }
 
         SubscriberList subList;
         for (int i = 0; i < n; i++) {
             Subscriber tempSub;
+            if (ifs.eof()) {
+                std::cerr << "Размер массива больше введенных данных, завершение программы\n";
+                return 1;
+            }
             ifs >> tempSub;
-           // std::cout << "Entering: " << tempSub;
             subList.add(tempSub);
         }
 
@@ -80,7 +83,7 @@ int main() {
                 // exit
                 return 0;
             default:
-                throw std::invalid_argument("you should choose a number between 1 and 6");
+                throw std::invalid_argument("Необходимо выбрать число от 1 до 6");
             }
 
             ofs << "Отсортированный массив:\n";

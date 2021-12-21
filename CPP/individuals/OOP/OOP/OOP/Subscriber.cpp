@@ -29,7 +29,7 @@ void Subscriber::setName(const string& value) {
 		value.length() == 2 &&
 		isName(value)))
 	{
-		throw std::invalid_argument("name must be an uppercase letter with a dot");
+		throw std::invalid_argument("Имя должно быть заглавной буквой с точкой.");
 	}
 	this->name_ = value;
 }
@@ -50,7 +50,7 @@ void Subscriber::setSurname(const string& value) {
 		std::isupper(value[0]) &&
 		isWordDashed(value)))
 	{
-		throw std::invalid_argument("surname must begin with capital letter and be a word");
+		throw std::invalid_argument("Фамилия должна начинаться с большой буквы и быть словом");
 	}
 	this->surname_ = value;
 }
@@ -79,7 +79,7 @@ void Subscriber::setPhone(const string& value) {
 		isPhone(value)
 		))
 	{
-		throw std::invalid_argument("phone must be given in form of +x(xxx)xxx-xx-xx");
+		throw std::invalid_argument("Телефон должен быть записан в форме +x(xxx)xxx-xx-xx");
 	}
 	this->phone_ = value;
 }
@@ -99,7 +99,7 @@ void Subscriber::setTariff(const string& value) {
 		isTariff(value)
 		))
 	{
-		throw std::invalid_argument("tariff must be given in form of 'xxx', where x is a digit");
+		throw std::invalid_argument("Тариф должен состоять из трёх цифр");
 	}
 	this->tariff_ = value;
 }
