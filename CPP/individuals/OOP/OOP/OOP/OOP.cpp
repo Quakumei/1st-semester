@@ -10,22 +10,16 @@
 #include "SubscriberList.h"
 #include "comparators.cpp"
 
-typedef std::string string;
-//typedef myString string;
+//typedef std::string string;
+typedef myString string;
 
 int main() {
     setlocale(LC_ALL, "ru-RU");
 
     try {
         std::ofstream ofs("output.txt");
-        try {
-            ofs.exceptions(ofs.failbit);
-        }
-        catch (const std::ios_base::failure& e)
-        {
-            std::cerr << "Ошибка открытия файла вывода \n"
-                << "Explanatory string: " << e.what() << '\n'
-                << "Error code: " << e.code() << '\n';
+        if (ofs.fail()){
+            std::cerr << "Ошибка открытия файла вывода... Программа будет выполнена только в консоли. \n";
         }
         //Test of Subscriber
         string name = "G.", surname = "Zho-okov", phone = "+7(960)961-11-11", tariff = "303";
@@ -37,14 +31,10 @@ int main() {
         string filename = "1.txt";
         std::cin >> filename;
         std::ifstream ifs(filename);
-        try {
-            ifs.exceptions(ifs.failbit);
-        }
-        catch (const std::ios_base::failure& e)
+        if (ifs.fail())
         {
-            std::cerr << "Ошибка открытия файла вывода \n"
-                << "Explanatory string: " << e.what() << '\n'
-                << "Error code: " << e.code() << '\n';
+            std::cerr << "Ошибка открытия файла ввода \n";
+            return 1;
         }
 
         int n = 0;
@@ -66,7 +56,7 @@ int main() {
 
         bool exitFlag = false;
         while (!exitFlag) {
-            std::cout << '\n' << "Выберите столбец сортировки:\n1 - Фамилия\n2 - Имя\n3 - Тариф\n4 - НомерТелефона\n5 - Выход\n>> ";
+            std::cout << '\n' << "Выберите столбец сортировки:\n1 - Фамилия\n2 - Имя\n3 - Тариф\n4 - НомерТелефона\n5 - Имя+Фамилия\n6 - Выход\n>> ";
             int choice = 0;
             std::cin >> choice;
             switch (choice) {
@@ -83,10 +73,14 @@ int main() {
                 subList.sort(comparators[COMPARATOR_PHONE]);
                 break;
             case 5:
-                exitFlag = true;
+                subList.sort(comparators[COMPARATOR_KEY]);
                 break;
+
+            case 6:
+                // exit
+                return 0;
             default:
-                throw std::invalid_argument("you should choose a number between 1 and 4");
+                throw std::invalid_argument("you should choose a number between 1 and 6");
             }
 
             ofs << "Отсортированный массив:\n";

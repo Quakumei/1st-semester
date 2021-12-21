@@ -121,7 +121,7 @@ Subscriber::Subscriber() {
 }
 
 std::istream& operator>>(std::istream& is, Subscriber& sub) {
-	string name = "Gleb", surname = "Zho-okov", phone = "+7(960)961-11-11", tariff = "303";
+	string name = "", surname = "", phone = "", tariff = "";
 	is >> surname >> name >> phone >> tariff;
 	sub = Subscriber(name, surname, phone, tariff);
 	return is;

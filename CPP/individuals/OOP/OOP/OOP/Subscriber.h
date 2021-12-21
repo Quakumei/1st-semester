@@ -3,8 +3,8 @@
 #include <iostream>
 #include "myString.h"
 
-typedef std::string string;
-//typedef myString string;
+//typedef std::string string;
+typedef myString string;
 
 
 class Subscriber {
